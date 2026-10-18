@@ -1,6 +1,6 @@
 {
-  "name": "nikita-os-vercel",
-  "version": "3.0.0",
+  "name": "nikita-os",
+  "version": "4.0.0",
   "private": true,
   "type": "module",
   "engines": {

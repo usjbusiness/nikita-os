@@ -20,7 +20,7 @@ export function validateState(s){
  courses:list(s.courses,1000,v=>{ensureRange(v.start,v.end);return {...base(v),code:optional(v.code,100),semester:optional(v.semester,100),section:optional(v.section,100),credits:Number.isFinite(v.credits)&&v.credits>=0&&v.credits<=30?v.credits:fail(),days:days(v.days),start:time(v.start),end:time(v.end),location:optional(v.location,300),status:choice(v.status,['planned','registered','waitlist']),notes:optional(v.notes)};}),
  links:list(s.links,500,v=>({...base(v),url:v.url?url(v.url):fail(),category:optional(v.category,100),description:optional(v.description,300),pinned:flag(v.pinned),brand:brand(v.brand)})),
  focus:{date:date(s.focus.date),main:optional(s.focus.main),priorities:list(s.focus.priorities,3,v=>text(v,500)),notes:optional(s.focus.notes,20000),goals:optional(s.focus.goals,20000)},
- hockey:{role:optional(s.hockey.role),keyword:optional(s.hockey.keyword,200),leadership:optional(s.hockey.leadership),review:optional(s.hockey.review),playlist:url(s.hockey.playlist),readiness:list(s.hockey.readiness,1000,v=>({date:date(v.date),sleep:score(v.sleep),energy:score(v.energy),freshness:score(v.freshness),mood:score(v.mood)}))}
+ hockey:{focusDate:date(s.hockey.focusDate??''),worked:optional(s.hockey.worked),role:optional(s.hockey.role),keyword:optional(s.hockey.keyword,200),leadership:optional(s.hockey.leadership),review:optional(s.hockey.review),playlist:url(s.hockey.playlist),readiness:list(s.hockey.readiness,1000,v=>({date:date(v.date),sleep:score(v.sleep),energy:score(v.energy),freshness:score(v.freshness),mood:score(v.mood)}))}
  };
 }
 function score(v){return Number.isInteger(v)&&v>=1&&v<=5?v:fail();}
