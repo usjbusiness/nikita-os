@@ -55,3 +55,6 @@ revoke all on function public.nos_save_state(bigint,jsonb) from public, anon, au
 grant execute on function public.nos_take_login_attempt() to service_role;
 grant execute on function public.nos_save_state(bigint,jsonb) to service_role;
 commit;
+
+-- Refresh Data API after creating these functions.
+NOTIFY pgrst, 'reload schema';

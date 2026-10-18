@@ -8,3 +8,11 @@ test('serverless auth, revisions, validation, pins, brands, logout and PIN rotat
 test('backwards-compatible v1 backups',()=>{const old=structuredClone(seed);for(const l of old.links){delete l.pinned;delete l.brand;}for(const e of old.events){delete e.brand;delete e.important;}const next=validateState(old);assert.equal(next.links[0].brand,'auto');assert.equal(next.links[0].pinned,false);assert.equal(next.events[0].important,false);});
 test('server config requires secret + HTTPS',()=>{assert.throws(()=>readConfig({}));const env={APP_PIN:'12345678',APP_URL:'https://personal.example',SESSION_SECRET:'x'.repeat(32),SUPABASE_URL:'https://project.supabase.co',SUPABASE_SECRET_KEY:'sb_secret_test',NODE_ENV:'production'};assert.equal(readConfig(env).secure,true);assert.throws(()=>readConfig({...env,APP_URL:'http://personal.example'}));});
 test('Supabase REST adapter uses server-only secret key and atomic save RPC',async()=>{const calls=[];const fake=async(url,options)=>{calls.push({url,options});let body=url.includes('nos_state?')?[{body:seed,revision:1}]:url.includes('nos_save_state')?2:url.includes('nos_take_login_attempt')?true:[];return new Response(JSON.stringify(body),{status:200});};const store=createSupabaseStore({url:'https://project.supabase.co',key:'sb_secret_fake'},fake);assert.equal((await store.load(seed)).revision,1);assert.equal(await store.save(1,seed),2);assert.equal(await store.takeAttempt(),true);assert.equal(calls[0].options.headers.apikey,'sb_secret_fake');assert.equal(calls[0].options.headers.Authorization,undefined);assert.deepEqual(JSON.parse(calls[1].options.body).p_expected_revision,1);});
+
+test('diagnostics reveal only safe status, operation and allowlisted code',async()=>{
+ for(const code of ['42501','PGRST202','42702','SECRET_KEY_SHOULD_NOT_APPEAR']){
+  const fake=async()=>new Response(JSON.stringify({code,message:'SECRET_KEY_SHOULD_NOT_APPEAR',details:'private session info'}),{status:403});
+  const store=createSupabaseStore({url:'https://project.supabase.co',key:'secret-do-not-print'},fake);
+  await assert.rejects(store.takeAttempt(),e=>e.status===503&&e.message.includes('HTTP 403')&&e.message.includes('проверка попыток входа')&&!e.message.includes('SECRET_KEY')&&!e.message.includes('private')&&!e.message.includes('secret-do-not-print'));
+ }
+});
