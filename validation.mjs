@@ -14,8 +14,9 @@ const ensureRange=(a,b)=>{if(a&&b&&b<=a)fail();};
 export function validateState(s){
  if(!s||typeof s!=='object')fail();
  return {
+ migrations:list(s.migrations??[],100,v=>text(v,100)),
  events:list(s.events,10000,v=>{ensureRange(v.start,v.end);return {...base(v),date:date(v.date),start:time(v.start),end:time(v.end),timeLabel:optional(v.timeLabel,100),type:choice(v.type,['class','hockey','game','personal','routine','travel','free','business']),location:optional(v.location,300),notes:optional(v.notes),series:optional(v.series,100),important:flag(v.important),brand:brand(v.brand)};}),
- tasks:list(s.tasks,10000,v=>({...base(v),due:date(v.due),course:optional(v.course,100),status:choice(v.status,['todo','doing','done']),priority:choice(v.priority,['normal','high']),notes:optional(v.notes),url:url(v.url)})),
+ tasks:list(s.tasks,10000,v=>({...base(v),kind:choice(v.kind??(v.course&&v.course!=='Личное'?'school':'personal'),['school','personal']),due:date(v.due),course:optional(v.course,100),status:choice(v.status,['todo','doing','done']),priority:choice(v.priority,['normal','high']),notes:optional(v.notes),url:url(v.url)})),
  courses:list(s.courses,1000,v=>{ensureRange(v.start,v.end);return {...base(v),code:optional(v.code,100),semester:optional(v.semester,100),section:optional(v.section,100),credits:Number.isFinite(v.credits)&&v.credits>=0&&v.credits<=30?v.credits:fail(),days:days(v.days),start:time(v.start),end:time(v.end),location:optional(v.location,300),status:choice(v.status,['planned','registered','waitlist']),notes:optional(v.notes)};}),
  links:list(s.links,500,v=>({...base(v),url:v.url?url(v.url):fail(),category:optional(v.category,100),description:optional(v.description,300),pinned:flag(v.pinned),brand:brand(v.brand)})),
  focus:{date:date(s.focus.date),main:optional(s.focus.main),priorities:list(s.focus.priorities,3,v=>text(v,500)),notes:optional(s.focus.notes,20000),goals:optional(s.focus.goals,20000)},
