@@ -28,7 +28,7 @@
     "public/v4.css": "62da15fbd67ea5d650fd5ce21cb5cf94a08115fa9241fdb104a78893de6c0461",
     "public/v5.css": "70bfa73c61b9d0703bade907be7bce5dbf4bec6367d6c4aa00b04ec395d49620",
     "public/version.json": "7caf04619707014347a5797839798fe4080d3154bd4c5000e4a2a53477311ea9",
-    "scripts/check.mjs": "104038611e7640a9dfd488f4524115f6cc5e8d86d046370fc40e2ab756bea869",
+    "scripts/check.mjs": "10add9f8a509e53eaa5028bd17f05cff8820898f80cacccdd77174dc9f098a9d",
     "seed.json": "392378c79d72bbec250be440f9d2287ffb3ad165bdabf695c7e3c56f1dbc682b",
     "server.mjs": "7bb3effd57eab714c06173a4f7f99cd06368e6088fefba700142869e17c8b577",
     "supabase/setup.sql": "2b95b5f5de3bbeecdc1a84b8ff48a7c04062e9b04defe43d00c29a1b0066f75d",
@@ -37,7 +37,6 @@
     "tests/migrations.test.mjs": "128bbf5adb8e6b9188c4427d55caaf925f52babc12ad1dbefb6a64712490fc28",
     "tests/planner.test.mjs": "3a5df8738d894991fa07521f058571bdba2d76b6aee2f11f43c474a088741a1b",
     "validation.mjs": "4703b190fd5cdaa9779f82744c255500e20e7f3e34722d2c39955fb522ee38bb",
-    "vercel.json": "7eb03ec277cbd9ca57a45e9792a877776eae0a91dfe08393f2c1d25645da1d8f",
     "ОБНОВЛЕНИЕ.txt": "9778330dee54c52c8022c4d4a3d968752eb5e4d08db192545219521ec1916656"
   }
 }
