@@ -1,10 +1,6 @@
 {
   "version": "5.0.0",
   "files": {
-    ".env.example": "56d7d8c1309b0f19106f15eba94429c241346422411e01629c770b9801cd81a1",
-    ".gitignore": "8cb17085333956a38f24d8ff3207faf43bbd91b9290620c0e51160cfa759a68b",
-    "QA_REPORT.md": "8b96a9b3e54e0f17d7629e6fc72d429d358c285b3782ec7272ffdb5f425a5b62",
-    "README_RU.md": "b54c95d90f0021e4dda6481111c381a9f3ec14493b45ff3109a71af9ff855516",
     "api/handler.js": "230cc80e49571799a2802644530a5fe7a2f8257e266e2c564a6be51d7555f06d",
     "lib/handler.mjs": "60b2e42c4f4fcfe5e7055a81f8a79ca5cccffdb7946f36c941c324432d0c34b6",
     "lib/store.mjs": "29d2db992364ac88c9e76fa1b9632a219408091d7776d56e00ff1318401f9fc1",
@@ -30,13 +26,6 @@
     "public/version.json": "7caf04619707014347a5797839798fe4080d3154bd4c5000e4a2a53477311ea9",
     "scripts/check.mjs": "10add9f8a509e53eaa5028bd17f05cff8820898f80cacccdd77174dc9f098a9d",
     "seed.json": "392378c79d72bbec250be440f9d2287ffb3ad165bdabf695c7e3c56f1dbc682b",
-    "server.mjs": "7bb3effd57eab714c06173a4f7f99cd06368e6088fefba700142869e17c8b577",
-    "supabase/setup.sql": "2b95b5f5de3bbeecdc1a84b8ff48a7c04062e9b04defe43d00c29a1b0066f75d",
-    "tests/api.test.mjs": "8b6d18a703a1d6e4a178ef55c047f9030397683dab2260ad1fd107132d4c6792",
-    "tests/helpers.mjs": "0477faff042478e93e1d7fbfa0be14ccc1e92bb87bc554635e00480699abc65a",
-    "tests/migrations.test.mjs": "128bbf5adb8e6b9188c4427d55caaf925f52babc12ad1dbefb6a64712490fc28",
-    "tests/planner.test.mjs": "3a5df8738d894991fa07521f058571bdba2d76b6aee2f11f43c474a088741a1b",
-    "validation.mjs": "4703b190fd5cdaa9779f82744c255500e20e7f3e34722d2c39955fb522ee38bb",
-    "ОБНОВЛЕНИЕ.txt": "9778330dee54c52c8022c4d4a3d968752eb5e4d08db192545219521ec1916656"
+    "validation.mjs": "4703b190fd5cdaa9779f82744c255500e20e7f3e34722d2c39955fb522ee38bb"
   }
 }
