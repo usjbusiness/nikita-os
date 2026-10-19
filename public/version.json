@@ -1,5 +1,5 @@
 {
-  "version": "5.0.0",
-  "build": "nos-5.0.0-compact",
-  "name": "Nikita OS Focus"
+  "version": "5.2.0",
+  "build": "nos-5.2.0-mobile-tools",
+  "name": "Nikita OS Mobile Tools"
 }

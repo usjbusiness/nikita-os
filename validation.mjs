@@ -1,3 +1,4 @@
+import {validateAcademics} from './academics-validation.mjs';
 const fail=()=>{throw Error('Invalid state')};
 const text=(v,n=4000)=>typeof v==='string'&&v.length<=n?v:fail();
 const optional=(v,n=4000)=>text(v??'',n);
@@ -14,6 +15,8 @@ const ensureRange=(a,b)=>{if(a&&b&&b<=a)fail();};
 export function validateState(s){
  if(!s||typeof s!=='object')fail();
  return {
+ academics:validateAcademics(s.academics),
+ notes:list(s.notes??[],1000,v=>({id:text(v.id,100),title:optional(v.title,300),body:text(v.body,20000),date:date(v.date)})),
  migrations:list(s.migrations??[],100,v=>text(v,100)),
  events:list(s.events,10000,v=>{ensureRange(v.start,v.end);return {...base(v),date:date(v.date),start:time(v.start),end:time(v.end),timeLabel:optional(v.timeLabel,100),type:choice(v.type,['class','hockey','game','personal','routine','travel','free','business']),location:optional(v.location,300),notes:optional(v.notes),series:optional(v.series,100),important:flag(v.important),brand:brand(v.brand)};}),
  tasks:list(s.tasks,10000,v=>({...base(v),kind:choice(v.kind??(v.course&&v.course!=='Личное'?'school':'personal'),['school','personal']),due:date(v.due),course:optional(v.course,100),status:choice(v.status,['todo','doing','done']),priority:choice(v.priority,['normal','high']),notes:optional(v.notes),url:url(v.url)})),
