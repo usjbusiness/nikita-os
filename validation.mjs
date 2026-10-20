@@ -1,3 +1,4 @@
+import {normalizeCoursePlans} from './plans-validation.mjs';
 import {validateAcademics} from './academics-validation.mjs';
 const fail=()=>{throw Error('Invalid state')};
 const text=(v,n=4000)=>typeof v==='string'&&v.length<=n?v:fail();
@@ -14,13 +15,16 @@ const days=v=>list(v,7,d=>Number.isInteger(d)&&d>=0&&d<=6?d:fail());
 const ensureRange=(a,b)=>{if(a&&b&&b<=a)fail();};
 export function validateState(s){
  if(!s||typeof s!=='object')fail();
+ const planCourses=list(s.courses,1000,v=>{ensureRange(v.start,v.end);return {...base(v),planId:optional(v.planId,100),requirementIds:list(v.requirementIds??[],100,x=>text(x,100)),code:optional(v.code,100),semester:optional(v.semester,100),section:optional(v.section,100),crn:v.crn===undefined||v.crn===''?'':typeof v.crn==='string'&&/^\d{4,10}$/.test(v.crn)?v.crn:fail(),credits:Number.isFinite(v.credits)&&v.credits>=0&&v.credits<=30?v.credits:fail(),days:days(v.days),start:time(v.start),end:time(v.end),location:optional(v.location,300),status:choice(v.status,['planned','registered','waitlist']),notes:optional(v.notes)};});
+ const plans=list(s.coursePlans??[],50,p=>({id:text(p.id,100),name:text(p.name,120),semester:optional(p.semester,100),notes:optional(p.notes,4000)}));if(plans.some(p=>!p.id||!p.name.trim()))fail();
+ const normalizedPlans=normalizeCoursePlans(plans,planCourses,optional(s.activeCoursePlanId,100));
  return {
  academics:validateAcademics(s.academics),
  notes:list(s.notes??[],1000,v=>({id:text(v.id,100),title:optional(v.title,300),body:text(v.body,20000),date:date(v.date)})),
  migrations:list(s.migrations??[],100,v=>text(v,100)),
  events:list(s.events,10000,v=>{ensureRange(v.start,v.end);return {...base(v),date:date(v.date),start:time(v.start),end:time(v.end),timeLabel:optional(v.timeLabel,100),type:choice(v.type,['class','hockey','game','personal','routine','travel','free','business']),location:optional(v.location,300),notes:optional(v.notes),series:optional(v.series,100),important:flag(v.important),brand:brand(v.brand)};}),
  tasks:list(s.tasks,10000,v=>({...base(v),kind:choice(v.kind??(v.course&&v.course!=='Личное'?'school':'personal'),['school','personal']),due:date(v.due),course:optional(v.course,100),status:choice(v.status,['todo','doing','done']),priority:choice(v.priority,['normal','high']),notes:optional(v.notes),url:url(v.url)})),
- courses:list(s.courses,1000,v=>{ensureRange(v.start,v.end);return {...base(v),code:optional(v.code,100),semester:optional(v.semester,100),section:optional(v.section,100),credits:Number.isFinite(v.credits)&&v.credits>=0&&v.credits<=30?v.credits:fail(),days:days(v.days),start:time(v.start),end:time(v.end),location:optional(v.location,300),status:choice(v.status,['planned','registered','waitlist']),notes:optional(v.notes)};}),
+ ...normalizedPlans,
  links:list(s.links,500,v=>({...base(v),url:v.url?url(v.url):fail(),category:optional(v.category,100),description:optional(v.description,300),pinned:flag(v.pinned),brand:brand(v.brand)})),
  focus:{date:date(s.focus.date),main:optional(s.focus.main),priorities:list(s.focus.priorities,3,v=>text(v,500)),notes:optional(s.focus.notes,20000),goals:optional(s.focus.goals,20000)},
  hockey:{focusDate:date(s.hockey.focusDate??''),worked:optional(s.hockey.worked),role:optional(s.hockey.role),keyword:optional(s.hockey.keyword,200),leadership:optional(s.hockey.leadership),review:optional(s.hockey.review),playlist:url(s.hockey.playlist),readiness:list(s.hockey.readiness,1000,v=>({date:date(v.date),sleep:score(v.sleep),energy:score(v.energy),freshness:score(v.freshness),mood:score(v.mood)}))}
